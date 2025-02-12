@@ -5,9 +5,10 @@ import depends.entity.FunctionEntity;
 import depends.entity.TypeEntity;
 import depends.entity.VarEntity;
 import depends.extractor.FileParser;
-import edu.emory.mathcs.backport.java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 import java.io.IOException;
 import java.util.List;

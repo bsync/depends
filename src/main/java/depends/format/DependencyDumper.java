@@ -24,6 +24,7 @@ SOFTWARE.
 
 package depends.format;
 
+import java.util.Arrays;
 import java.util.List;
 
 import depends.format.detail.DetailTextFormatDependencyDumper;
@@ -36,11 +37,10 @@ import depends.format.plantuml.BriefPlantUmlFormatDependencyDumper;
 import depends.format.plantuml.PlantUmlFormatDependencyDumper;
 import depends.format.xml.XmlFormatDependencyDumper;
 import depends.matrix.core.DependencyMatrix;
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 public class DependencyDumper {
 
-	private DependencyMatrix dependencyMatrix;
+	private final DependencyMatrix dependencyMatrix;
 
 	public DependencyDumper(DependencyMatrix dependencies) {
 		this.dependencyMatrix = dependencies;
