@@ -30,8 +30,6 @@ import depends.extractor.LangProcessorRegistration;
 public class LangRegister {
 	public LangRegister() {
 		add (new depends.extractor.java.JavaProcessor());
-		add (new depends.extractor.cpp.CppProcessor());
-		add (new depends.extractor.ruby.RubyProcessor());
 		add (new depends.extractor.pom.PomProcessor());
 		add (new depends.extractor.kotlin.KotlinProcessor());
 		add (new depends.extractor.python.union.PythonProcessor());
