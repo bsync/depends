@@ -72,7 +72,7 @@ public class JavaListener extends JavaParserBaseListener {
 	@Override
 	public void enterClassDeclaration(ClassDeclarationContext ctx) {
 		if (ctx.IDENTIFIER()==null) return;
-		context.foundNewType(GenericName.build(ctx.IDENTIFIER().getText()), ctx.getStart().getLine());
+		context.foundNewType(GenericName.build(ctx.IDENTIFIER().getText()), "class", ctx.getStart().getLine());
 		// implements
 		if (ctx.typeList() != null) {
 			for (int i = 0; i < ctx.typeList().typeType().size(); i++) {
@@ -99,14 +99,14 @@ public class JavaListener extends JavaParserBaseListener {
 
 	@Override
 	public void enterEnumDeclaration(EnumDeclarationContext ctx) {
-		context.foundNewType(GenericName.build(ctx.IDENTIFIER().getText()), ctx.getStart().getLine());
+		context.foundNewType(GenericName.build(ctx.IDENTIFIER().getText()), "enum", ctx.getStart().getLine());
 		annotationProcessor.processAnnotationModifier(ctx, TypeDeclarationContext.class ,"classOrInterfaceModifier.annotation",context.lastContainer());
 		super.enterEnumDeclaration(ctx);
 	}
 
 	@Override
 	public void enterAnnotationTypeDeclaration(AnnotationTypeDeclarationContext ctx) {
-		context.foundNewType(GenericName.build(ctx.IDENTIFIER().getText()), ctx.getStart().getLine());
+		context.foundNewType(GenericName.build(ctx.IDENTIFIER().getText()), "annotation", ctx.getStart().getLine());
 		annotationProcessor.processAnnotationModifier(ctx, TypeDeclarationContext.class ,"classOrInterfaceModifier.annotation",context.lastContainer());
 		super.enterAnnotationTypeDeclaration(ctx);
 	}
@@ -123,7 +123,7 @@ public class JavaListener extends JavaParserBaseListener {
 	 */
 	@Override
 	public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx) {
-		context.foundNewType(GenericName.build(ctx.IDENTIFIER().getText()), ctx.getStart().getLine());
+		context.foundNewType(GenericName.build(ctx.IDENTIFIER().getText()), "interface", ctx.getStart().getLine());
 		// type parameters
 		if (ctx.typeParameters() != null) {
 			foundTypeParametersUse(ctx.typeParameters());
@@ -161,6 +161,26 @@ public class JavaListener extends JavaParserBaseListener {
 		String returnedType = ClassTypeContextHelper.getClassName(ctx.typeTypeOrVoid());
 		FunctionEntity method = context.foundMethodDeclarator(methodName, returnedType, throwedType,ctx.getStart().getLine());
 		new FormalParameterListContextHelper(ctx.formalParameters(), method, entityRepo);
+		if (ctx.getParent().getParent() instanceof ClassBodyDeclarationContext) {
+			ClassBodyDeclarationContext classBodyDeclarationContext = (ClassBodyDeclarationContext) ctx.getParent().getParent();
+			if (classBodyDeclarationContext.modifier() != null) {
+				for (ModifierContext modifier : classBodyDeclarationContext.modifier()) {
+					if (modifier.classOrInterfaceModifier() == null) continue;
+					if (modifier.classOrInterfaceModifier().PUBLIC()!=null){
+						method.setVisibility("public");
+					}
+					else if (modifier.classOrInterfaceModifier().PROTECTED()!=null){
+						method.setVisibility("protected");
+					}
+					else if (modifier.classOrInterfaceModifier().PRIVATE()!=null){
+						method.setVisibility("private");
+					}
+				}
+			}
+		}
+		else{
+			System.out.println("****" + ctx.getParent().getClass().getSimpleName());
+		}
 		if (ctx.typeParameters() != null) {
 			List<GenericName> parameters = TypeParameterContextHelper.getTypeParameters(ctx.typeParameters());
 			method.addTypeParameter(parameters);

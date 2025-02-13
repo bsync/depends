@@ -89,7 +89,7 @@ public class GoListener extends  GoParserBaseListener {
         if (specHelper.getTypeDefHelper().isTypeRef()){
             context.foundNewAlias(specHelper.getIdentifier(),specHelper.getTypeDefHelper().getTypeRefName());
         }else if (specHelper.getTypeDefHelper().isStruct()){
-            context.foundNewType(specHelper.getIdentifier(),ctx.getStart().getLine());
+            context.foundNewType(specHelper.getIdentifier(),"type", ctx.getStart().getLine());
         }
         super.enterTypeSpec(ctx);
     }

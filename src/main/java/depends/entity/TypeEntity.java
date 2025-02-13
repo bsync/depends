@@ -31,18 +31,20 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class TypeEntity extends ContainerEntity {
-	static final public TypeEntity buildInType = new TypeEntity(GenericName.build("built-in"), null, -1);
-	static final public TypeEntity genericParameterType = new TypeEntity(GenericName.build("T"), null, -3);
+	static final public TypeEntity buildInType = new TypeEntity(GenericName.build("built-in"), null,null, -1);
+	static final public TypeEntity genericParameterType = new TypeEntity(GenericName.build("T"), null,null, -3);
 	Collection<TypeEntity> inheritedTypes = new ArrayList<>();
 	Collection<TypeEntity> implementedTypes = new ArrayList<>();
 	Collection<GenericName> inhertedTypeIdentifiers;
 	Collection<GenericName> implementedIdentifiers;
 	TypeEntity inheritedType;
+	String stereoType;
 	public TypeEntity() {}
-	public TypeEntity(GenericName simpleName, Entity parent, Integer id) {
+	public TypeEntity(GenericName simpleName, String stereoType, Entity parent, Integer id) {
 		super(simpleName, parent, id);
 		inhertedTypeIdentifiers = new ArrayList<>();
 		implementedIdentifiers = new ArrayList<>();
+		this.stereoType = stereoType;
 	}
 
 	@Override
@@ -199,6 +201,9 @@ public class TypeEntity extends ContainerEntity {
 		}
 		return null;
 	}
+    public String getStereoType() {
+		return this.stereoType;
+    }
 	
 	
 }

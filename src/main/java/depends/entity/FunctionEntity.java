@@ -36,6 +36,7 @@ public class FunctionEntity extends ContainerEntity{
     Collection<GenericName> throwTypesIdentifiers = new ArrayList<>(); 
 	private Collection<Entity> returnTypes = new ArrayList<>();
 	private Collection<Entity> throwTypes = new ArrayList<>();
+	private String visibility = "";
 	public FunctionEntity() {
 		this.parameters = new ArrayList<>();
 	}
@@ -145,5 +146,13 @@ public class FunctionEntity extends ContainerEntity{
 			if (expr.isStatement())
 				expr.addDeducedTypeFunction(this);
 		}
+	}
+
+	public void setVisibility(String visibility) {
+		this.visibility = visibility;
+	}
+
+	public String getVisibility() {
+		return visibility;
 	}
 }

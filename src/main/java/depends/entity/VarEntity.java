@@ -33,6 +33,7 @@ public class VarEntity extends ContainerEntity {
 	private GenericName rawType;
 	private TypeEntity type;
 	private List<FunctionCall> functionCalls;
+	private String visibility;
 	public VarEntity() {
 		
 	}
@@ -103,4 +104,13 @@ public class VarEntity extends ContainerEntity {
 			}
 		}
 	}
+
+	public void setVisibility(String visibility) {
+		this.visibility = visibility;
+	}
+
+    public String getVisibility() {
+        return visibility;
+    }
+
 }

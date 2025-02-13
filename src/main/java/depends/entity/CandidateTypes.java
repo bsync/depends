@@ -36,7 +36,7 @@ public class CandidateTypes extends TypeEntity {
 		candidateTypes = new ArrayList<>();
 	}
 	public CandidateTypes(List<TypeEntity> candidateTypes, Integer id) {
-		super(GenericName.build("candidateTypes"), null, id);
+		super(GenericName.build("candidateTypes"), "candidate", null, id);
 		this.candidateTypes = candidateTypes;
 	}
 

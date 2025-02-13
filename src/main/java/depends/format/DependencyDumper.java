@@ -27,6 +27,7 @@ package depends.format;
 import java.util.Arrays;
 import java.util.List;
 
+import depends.format.archinotes.ArchinotesDependencyDumper;
 import depends.format.detail.DetailTextFormatDependencyDumper;
 import depends.format.dot.DotFormatDependencyDumper;
 import depends.format.dot.DotFullnameDependencyDumper;

@@ -43,7 +43,7 @@ public class FileEntity extends TypeEntity {
 	public FileEntity() {}
 
 	public FileEntity(boolean fileAsModule,String fullName, int fileId, boolean isInProjectScope) {
-		super(GenericName.build(fullName), null, fileId);
+		super(GenericName.build(fullName), "file", null, fileId);
 		setQualifiedName(fullName);
 		this.isInProjectScope = isInProjectScope;
 		this.fileAsModule = fileAsModule;

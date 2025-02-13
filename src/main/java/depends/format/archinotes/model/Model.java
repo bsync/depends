@@ -22,12 +22,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package depends.entity;
+package depends.format.archinotes.model;
 
-public class EmptyTypeEntity extends TypeEntity {
+import java.util.Map;
 
-	public EmptyTypeEntity() {
-		super(GenericName.build(""), null, null, -1);
-	}
+public class Model {
+    private Map<String, ModelElement> nodes;
+    private Map<String, ModelRelation> edges;
 
+    public Map<String, ModelElement> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(Map<String, ModelElement> nodes) {
+        this.nodes = nodes;
+    }
+
+    public Map<String, ModelRelation> getEdges() {
+        return edges;
+    }
+
+    public void setEdges(Map<String, ModelRelation> edges) {
+        this.edges = edges;
+    }
 }

@@ -30,6 +30,7 @@ import depends.extractor.AbstractLangProcessor;
 import depends.extractor.LangProcessorRegistration;
 import depends.extractor.UnsolvedBindings;
 import depends.format.DependencyDumper;
+import depends.format.archinotes.ArchinotesDependencyDumper;
 import depends.format.detail.UnsolvedSymbolDumper;
 import depends.generator.DependencyGenerator;
 import depends.generator.FileDependencyGenerator;
@@ -131,6 +132,10 @@ public class Main {
 			DependencyDumper output = new DependencyDumper(matrix);
 			output.outputResult(outputName+"-"+dependencyGenerator.getType(), outputDir, outputFormat);
 		}
+
+		//additional: generate archinotes dependency data
+		ArchinotesDependencyDumper archinotesDependencyDumper = new ArchinotesDependencyDumper(entityRepo);
+		archinotesDependencyDumper.dump(outputDir+outputName+".archnotes.json");
 
 		if (args.isOutputExternalDependencies()) {
 			Set<UnsolvedBindings> unsolved = langProcessor.getExternalDependencies();

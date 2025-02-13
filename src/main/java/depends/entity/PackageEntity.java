@@ -33,12 +33,12 @@ public class PackageEntity extends TypeEntity {
 	public PackageEntity() {}
 
 	public PackageEntity(String rawName, Integer id) {
-		super(GenericName.build(rawName),  null,id);
+		super(GenericName.build(rawName), "package", null,id);
 		setQualifiedName(rawName); //in Java, package raw name = full name
 	}
 
 	public PackageEntity(String rawName, Entity currentFile, Integer id) {
-		super(GenericName.build(rawName),  currentFile,id);
+		super(GenericName.build(rawName), "package",  currentFile,id);
 	}
 
 	public Entity getChildOfName(String name) {

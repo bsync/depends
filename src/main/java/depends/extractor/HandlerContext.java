@@ -57,8 +57,8 @@ public abstract class HandlerContext {
 		return currentFileEntity;
 	}
 
-	public TypeEntity foundNewType(GenericName name, Integer startLine) {
-		TypeEntity currentTypeEntity = new TypeEntity(name, this.latestValidContainer(),
+	public TypeEntity foundNewType(GenericName name, String stereoType, Integer startLine) {
+		TypeEntity currentTypeEntity = new TypeEntity(name, stereoType, this.latestValidContainer(),
 				idGenerator.generateId());
 		currentTypeEntity.setLine(startLine);
 		pushToStack(currentTypeEntity);
@@ -73,8 +73,8 @@ public abstract class HandlerContext {
 	 * @param startLine
 	 * @return
 	 */
-	public TypeEntity foundNewType(String name, Integer startLine) {
-		return foundNewType(GenericName.build(name),startLine);
+	public TypeEntity foundNewType(String name, String stereoType, Integer startLine) {
+		return foundNewType(GenericName.build(name),stereoType,startLine);
 	}
 
 	public AliasEntity foundNewAlias(String aliasName, String originalName) {
