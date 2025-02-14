@@ -13,18 +13,7 @@ public class RelationBuildStrategy {
         RELATION_PRIORITIES.put(DependencyType.CONTAIN, 1);
         RELATION_PRIORITIES.put(DependencyType.INHERIT, 1);
         RELATION_PRIORITIES.put(DependencyType.IMPLEMENT, 1);
-        // ... 其他关系映射
-        RELATION_PRIORITIES.put(DependencyType.CALL,100);
-        RELATION_PRIORITIES.put(DependencyType.PARAMETER, 100);
-        RELATION_PRIORITIES.put(DependencyType.RETURN, 100);
-        RELATION_PRIORITIES.put(DependencyType.SET, 100);
-        RELATION_PRIORITIES.put(DependencyType.USE  , 100);
-        RELATION_PRIORITIES.put(DependencyType.RECEIVE, 100);
-        RELATION_PRIORITIES.put(DependencyType.CREATE, 100);
-        RELATION_PRIORITIES.put(DependencyType.CAST, 100);
-        RELATION_PRIORITIES.put(DependencyType.THROW, 100);
-        RELATION_PRIORITIES.put(DependencyType.LINK, 100);
-        RELATION_PRIORITIES.put(DependencyType.ANNOTATION, 100);
+        // ... 其他关系映射不需要，默认 100
     }
 
     // 关系类型映射，将具体关系映射到更通用的关系
@@ -35,17 +24,6 @@ public class RelationBuildStrategy {
         RELATION_TYPE_MAPPING.put(DependencyType.INHERIT, DependencyType.INHERIT);
         RELATION_TYPE_MAPPING.put(DependencyType.IMPLEMENT, DependencyType.IMPLEMENT);
         // 其他关系统一映射为 "Dependency"
-        RELATION_TYPE_MAPPING.put(DependencyType.CALL, "Dependency");
-        RELATION_TYPE_MAPPING.put(DependencyType.PARAMETER, "Dependency");
-        RELATION_TYPE_MAPPING.put(DependencyType.RETURN, "Dependency");
-        RELATION_TYPE_MAPPING.put(DependencyType.SET, "Dependency");
-        RELATION_TYPE_MAPPING.put(DependencyType.USE, "Dependency");
-        RELATION_TYPE_MAPPING.put(DependencyType.RECEIVE, "Dependency");
-        RELATION_TYPE_MAPPING.put(DependencyType.CREATE, "Dependency");
-        RELATION_TYPE_MAPPING.put(DependencyType.CAST, "Dependency");
-        RELATION_TYPE_MAPPING.put(DependencyType.THROW, "Dependency");
-        RELATION_TYPE_MAPPING.put(DependencyType.LINK, "Dependency");
-        RELATION_TYPE_MAPPING.put(DependencyType.ANNOTATION, "Dependency");
     }
 
     public List<ModelRelation> processRelations(int entityFrom, int entityTo, List<Relation> relations) {

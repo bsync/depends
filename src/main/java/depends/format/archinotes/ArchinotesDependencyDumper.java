@@ -94,7 +94,7 @@ public class ArchinotesDependencyDumper {
 		return entities;
 	}
 
-	private void build() {
+	public void build() {
 		model = new Model();
 		Map<String, ModelElement> nodes = new HashMap<>();
 		Map<String, ModelRelation> edges = new HashMap<>();
@@ -108,7 +108,9 @@ public class ArchinotesDependencyDumper {
 
 			if (outputLevelMatch(entity)) {
 				Entity parentEntity = getAncestorOfType(entity.getParent());
-				nodes.put(String.valueOf(entity.getId()), ModelElement.buildElement(entity,parentEntity));
+				if (entity.getId()>=0) {
+					nodes.put(String.valueOf(entity.getId()), ModelElement.buildElement(entity, parentEntity));
+				}
 			}
 		}
 
@@ -170,6 +172,10 @@ public class ArchinotesDependencyDumper {
 			e.printStackTrace();
 		}
 
+	}
+
+	public Model getModel() {
+		return model;
 	}
 
 }
