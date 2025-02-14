@@ -251,7 +251,7 @@ public class ModelElement {
                 String.valueOf(entity.getId()),
                 getType(entity),
                 entity.getRawName().getName(),
-                String.valueOf(parentEntity == null ? -1 : entity.getParent().getId()));
+                String.valueOf(parentEntity == null ? -1 : parentEntity.getId()));
 
         element.setStereoType(getType(entity));
         element.setProps(getProps(entity));
