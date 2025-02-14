@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -43,15 +43,14 @@ import depends.entity.repo.EntityRepo;
 import depends.format.archinotes.model.Model;
 import depends.format.archinotes.model.ModelElement;
 import depends.format.archinotes.model.ModelRelation;
-import depends.matrix.core.DependencyDetail;
 import depends.relations.Relation;
 
-import static depends.deptypes.DependencyType.POSSIBLE_DEP;
 
 public class ArchinotesDependencyDumper {
 
 	private final EntityRepo entityRepo;
 	private Model model;
+	private RelationBuildStrategy relationStrategy = new RelationBuildStrategy();
 
 	public ArchinotesDependencyDumper(EntityRepo entityRepo) {
 		this.entityRepo = entityRepo;
@@ -111,30 +110,54 @@ public class ArchinotesDependencyDumper {
 				Entity parentEntity = getAncestorOfType(entity.getParent());
 				nodes.put(String.valueOf(entity.getId()), ModelElement.buildElement(entity,parentEntity));
 			}
-			int entityFrom = upToOutputLevelEntityId(entityRepo, entity);
-			if (entityFrom == -1)
-				continue;
-				
-			for (Relation relation : entity.getRelations()) {
-				Entity relatedEntity = relation.getEntity();
-				if (relatedEntity == null)
-					continue;
-				List<Entity> relatedEntities = expandEntity(relatedEntity);
-				relatedEntities.forEach(theEntity->{
-					if (theEntity.getId()>=0) {
-						int entityTo = upToOutputLevelEntityId(entityRepo,theEntity);
-						if (entityTo!=-1 && entityFrom!=entityTo) {
-							ModelRelation modelRelation = ModelRelation.build(entityFrom,entityTo,relation);
-							edges.put(modelRelation.getId(), modelRelation);
-						}
-					}
-				});
-			}
 		}
-		System.out.println("Finish create archinotes data....");
+
+		// 首先收集所有关系
+		Map<RelationKey, List<Relation>> allRelations = collectAllRelations(entityRepo);
+		
+		// 然后处理关系优先级并创建最终的ModelRelation
+		allRelations.forEach((key, relations) -> {
+			List<ModelRelation> modelRelations = relationStrategy.processRelations(key.fromId, key.toId, relations);
+			modelRelations.forEach(modelRelation -> {
+				edges.put(modelRelation.getId(), modelRelation);
+			});
+		});
 
 		model.setNodes(nodes);
 		model.setEdges(edges);
+		System.out.println("Finish create archinotes data....");
+
+	}
+
+	private Map<RelationKey, List<Relation>> collectAllRelations(EntityRepo entityRepo) {
+		Map<RelationKey, List<Relation>> relationMap = new HashMap<>();
+
+		Iterator<Entity> iterator = entityRepo.entityIterator();
+		while (iterator.hasNext()) {
+			Entity entity = iterator.next();
+			if (!entity.inScope()) continue;
+
+			int entityFrom = upToOutputLevelEntityId(entityRepo, entity);
+			if (entityFrom == -1) continue;
+
+			for (Relation relation : entity.getRelations()) {
+				Entity relatedEntity = relation.getEntity();
+				if (relatedEntity == null) continue;
+
+				List<Entity> relatedEntities = expandEntity(relatedEntity);
+				for (Entity theEntity : relatedEntities) {
+					if (theEntity.getId() >= 0) {
+						int entityTo = upToOutputLevelEntityId(entityRepo, theEntity);
+						if (entityTo != -1 && entityFrom != entityTo) {
+							RelationKey key = new RelationKey(entityFrom, entityTo);
+							relationMap.computeIfAbsent(key, k -> new ArrayList<>())
+									 .add(relation);
+						}
+					}
+				}
+			}
+		}
+		return relationMap;
 	}
 
 	public void dump(String jsonFileName) {
