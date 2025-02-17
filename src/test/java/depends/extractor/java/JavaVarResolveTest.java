@@ -45,7 +45,7 @@ public class JavaVarResolveTest extends JavaParserTest{
         parser.parse(src);
         resolveAllBindings();
         ContainerEntity e = (ContainerEntity) entityRepo.getEntity("LocalVarInferExample.setExample");
-        this.assertContainsRelation(e, DependencyType.CONTAIN, "MyInteger");
+        this.assertContainsRelation(e, DependencyType.CREATE, "MyInteger");
 	}
 	
 	@Test

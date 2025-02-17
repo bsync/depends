@@ -76,8 +76,13 @@ public class RelationCounter {
 
 	private void computeContainerRelations(ContainerEntity entity) {
 		for (VarEntity var:entity.getVars()) {
-			if (var.getType()!=null)
-				entity.addRelation(buildRelation(entity,DependencyType.CONTAIN,var.getType(),var.getLocation()));
+			if (var.getType()!=null){
+				if (entity instanceof FunctionEntity){
+					entity.addRelation(buildRelation(entity,DependencyType.CREATE,var.getType(),var.getLocation()));
+				}else{
+					entity.addRelation(buildRelation(entity,DependencyType.CONTAIN,var.getType(),var.getLocation()));
+				}
+			}
 			for (Entity type:var.getResolvedTypeParameters()) {
 				var.addRelation(buildRelation(var, DependencyType.PARAMETER,type));
 			}
