@@ -133,9 +133,11 @@ public class Main {
 			output.outputResult(outputName+"-"+dependencyGenerator.getType(), outputDir, outputFormat);
 		}
 
-		//additional: generate archinotes dependency data
-		ArchinotesDependencyDumper archinotesDependencyDumper = new ArchinotesDependencyDumper(entityRepo);
-		archinotesDependencyDumper.dump(outputDir+outputName+".archnotes.json");
+		//additional: generate archinotes dependency data (only if enabled)
+		if (args.isGenerateArchinotes()) {
+			ArchinotesDependencyDumper archinotesDependencyDumper = new ArchinotesDependencyDumper(entityRepo);
+			archinotesDependencyDumper.dump(outputDir+File.separator+outputName+"-archinotes.json");
+		}
 
 		if (args.isOutputExternalDependencies()) {
 			Set<UnsolvedBindings> unsolved = langProcessor.getExternalDependencies();

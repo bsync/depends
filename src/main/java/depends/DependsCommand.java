@@ -82,6 +82,8 @@ public class DependsCommand {
 	private boolean duckTypingDeduce = true;
 	@Option(names = {"--output-self-deps"}, description = "Output self dependencies")
 	private boolean outputSelfDependencies = false;
+	@Option(names = {"--archinotes"}, description = "Generate Archinotes dependency data")
+	private boolean generateArchinotes = false;
 	@Option(names = {"-h","--help"}, usageHelp = true, description = "display this help and exit")
     boolean help;
 	public DependsCommand() {
@@ -161,5 +163,8 @@ public class DependsCommand {
 	}
 	public boolean isDuckTypingDeduce() {
 		return this.duckTypingDeduce;
+	}
+	public boolean isGenerateArchinotes() {
+		return generateArchinotes;
 	}
 }
