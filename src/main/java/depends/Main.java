@@ -104,6 +104,8 @@ public class Main {
 		String outputDir = args.getOutputDir();
 		String[] outputFormat = args.getFormat();
 
+		ensureOutputDirectoryExists(outputDir);
+
 		inputDir = FileUtil.uniqFilePath(inputDir);
 
 		if (args.isAutoInclude()) {
@@ -153,6 +155,13 @@ public class Main {
 		if ( args.isDv8map()) {
 			DV8MappingFileBuilder dv8MapfileBuilder = new DV8MappingFileBuilder(langProcessor.supportedRelations());
 			dv8MapfileBuilder.create(outputDir+ File.separator+"depends-dv8map.mapping");
+		}
+	}
+
+	private static void ensureOutputDirectoryExists(String outputDir) {
+		File outputDirFile = new File(outputDir);
+		if (!outputDirFile.exists()) {
+			outputDirFile.mkdirs();
 		}
 	}
 
