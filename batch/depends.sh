@@ -1,4 +1,3 @@
 #!/bin/sh
-
-exec java -jar depends.jar "$@"
-
+DIR=$(dirname "$0")
+exec java -jar "$DIR/depends.jar" "$@"
