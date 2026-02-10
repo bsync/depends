@@ -68,11 +68,30 @@ public class PythonCodeListener extends PythonParserBaseListener{
 			}
 			List<String> fullNames = sureImportedModulesParsed(0,moduleName,null);
 			 
+			// Find the main entity for this import (the package or main module)
+			Entity mainEntity = null;
+			String mainFullName = null;
 			for (String fullName:fullNames) {
 				if (FileUtil.existFile(fullName) && !(FileUtil.isDirectory(fullName))) {
 					context.foundNewImport(new FileImport(fullName));
 				}
-				context.foundNewImport(new NameAliasImport(fullName, entityRepo.getEntity(fullName), aliasName));
+				Entity importedEntity = entityRepo.getEntity(fullName);
+				// If this is the __init__.py file, use the package entity instead
+				if (fullName.endsWith(PythonBuiltInType.PACKAGE_PY_NAME) && importedEntity != null) {
+					Entity parent = importedEntity.getParent();
+					if (parent != null) {
+						mainEntity = parent;
+						mainFullName = parent.getRawName().uniqName();
+					}
+				} else if (mainEntity == null && importedEntity != null) {
+					// For non-package imports, use the first file as main entity
+					mainEntity = importedEntity;
+					mainFullName = fullName;
+				}
+			}
+			// Create only ONE NameAliasImport for the main entity
+			if (mainEntity != null) {
+				context.foundNewImport(new NameAliasImport(mainFullName, mainEntity, aliasName));
 			}
 		}
 		super.enterImport_stmt(ctx);
@@ -220,7 +239,9 @@ public class PythonCodeListener extends PythonParserBaseListener{
 				}
 			}
 			if (FileUtil.existFile(fullName+File.separator + PythonBuiltInType.PACKAGE_PY_NAME)) {
-				visitedFiles.add( fullName+File.separator +PythonBuiltInType.PACKAGE_PY_NAME);
+				String initFile = fullName+File.separator +PythonBuiltInType.PACKAGE_PY_NAME;
+				invokeParser(initFile);
+				visitedFiles.add(initFile);
 			}
 		}else{
 			invokeParser(fullName);

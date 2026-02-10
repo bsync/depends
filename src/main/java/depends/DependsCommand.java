@@ -68,6 +68,8 @@ public class DependsCommand {
     private String namePathPattern="";
 	@Option(names = {"-i","--includes"},split=",", description = "The files of searching path")
     private String[] includes = new String[] {};
+	@Option(names = {"--exclude"},split=",", description = "Exclude files/directories matching path patterns")
+	private String[] excludes = new String[] {};
 	@Option(names = {"--auto-include"},split=",", description = "auto include all paths under the source path (please notice the potential side effect)")
 	private boolean autoInclude = false;
 	@Option(names = {"--detail"},split=",", description = "add detail dependency information to output (only applicable for JSON output format)")
@@ -118,6 +120,9 @@ public class DependsCommand {
 	}
 	public String[] getIncludes() {
 		return includes;
+	}
+	public String[] getExcludes() {
+		return excludes;
 	}
 	public boolean isHelp() {
 		return help;

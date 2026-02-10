@@ -87,6 +87,7 @@ abstract public class AbstractLangProcessor {
 	protected EntityRepo entityRepo;
 	protected String inputSrcPath;
 	public String[] includeDirs;
+	private String[] excludes;
 	private Set<UnsolvedBindings> potentialExternalDependencies;
 	private List<String> includePaths;
 	private static Logger logger = LoggerFactory.getLogger(AbstractLangProcessor.class);
@@ -106,8 +107,13 @@ abstract public class AbstractLangProcessor {
 	 * @return
 	 */
 	public EntityRepo buildDependencies(String inputDir, String[] includeDir, IBindingResolver bindingResolver) {
+		return buildDependencies(inputDir, includeDir, new String[]{}, bindingResolver);
+	}
+
+	public EntityRepo buildDependencies(String inputDir, String[] includeDir, String[] excludes, IBindingResolver bindingResolver) {
 		this.inputSrcPath = inputDir;
 		this.includeDirs = includeDir;
+		this.excludes = excludes;
 		this.bindingResolver = bindingResolver;
 		logger.info("Start parsing files...");
 		parseAllFiles();
@@ -166,6 +172,9 @@ abstract public class AbstractLangProcessor {
 
 		});
 		fileTransversal.extensionFilter(this.fileSuffixes());
+		if (this.excludes != null && this.excludes.length > 0) {
+			fileTransversal.excludeFilter(this.excludes);
+		}
 		fileTransversal.travers(this.inputSrcPath);
 		for (String f : phase2Files) {
 			parseFile(f, phase2Files);

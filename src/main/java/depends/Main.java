@@ -99,6 +99,7 @@ public class Main {
 		String lang = args.getLang();
 		String inputDir = args.getSrc();
 		String[] includeDir = args.getIncludes();
+		String[] excludes = args.getExcludes();
 		String outputName = args.getOutputName();
 		String outputDir = args.getOutputDir();
 		String[] outputFormat = args.getFormat();
@@ -119,7 +120,7 @@ public class Main {
 
 		long startTime = System.currentTimeMillis();
 		//step1: build data
-		EntityRepo entityRepo = langProcessor.buildDependencies(inputDir, includeDir, bindingResolver);
+		EntityRepo entityRepo = langProcessor.buildDependencies(inputDir, includeDir, excludes, bindingResolver);
 
 		new RelationCounter(entityRepo,langProcessor, bindingResolver).computeRelations();
 		System.out.println("Dependency done....");
