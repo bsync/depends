@@ -4,4 +4,4 @@ cd utils && mvn install && cd ..
 ./lib_install.sh
 mvn package -Dtest='!depends.extractor.cpp.**'
 
-java -jar target/depends-0.9.8-jar-with-dependencies.jar --help
+java -jar target/depends-0.9.8-jar-with-dependencies.jar --help | head
